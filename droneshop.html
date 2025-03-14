@@ -436,7 +436,7 @@
     <script>
     async function loadMenu() {
         try {
-            const response = await fetch('menu finish.html');
+            const response = await fetch('menu.html');
             const data = await response.text();
             document.getElementById('header').innerHTML = data;
         } catch (error) {
