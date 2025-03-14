@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DroneZone - Custom Drone Builder</title>
+    <style>
+        :root {
+            --primary-color: #304055;
+            --secondary-color: #3498db;
+            --text-color: #333;
+            --light-bg: #f5f8fa;
+            --card-bg: #fff;
+            --border-color: #e1e4e8;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--light-bg);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+        
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 1rem;
+            text-align: center;
+        }
+        
+        nav {
+            display: flex;
+            justify-content: flex-end;
+            padding: 0.5rem 2rem;
+            background-color: var(--primary-color);
+        }
+        
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin-left: 1.5rem;
+            font-weight: 500;
+        }
+        
+        .hero {
+            background-color: #555;
+            color: white;
+            text-align: center;
+            padding: 4rem 2rem;
+            background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('/api/placeholder/1200/400');
+            background-size: cover;
+            background-position: center;
+        }
+        
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+        
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .form-section {
+            margin-bottom: 2rem;
+        }
+        
+        .form-section h2 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--secondary-color);
+        }
+        
+        .form-row {
+            display: flex;
+            flex-wrap: wrap;
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group {
+            flex: 1;
+            min-width: 300px;
+            margin-right: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group:last-child {
+            margin-right: 0;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+        
+        select, input, textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+        
+        .radio-group {
+            display: flex;
+            flex-wrap: wrap;
+        }
+        
+        .radio-option {
+            display: flex;
+            align-items: center;
+            margin-right: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .radio-option input {
+            width: auto;
+            margin-right: 0.5rem;
+        }
+        
+        .btn {
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            font-size: 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background-color 0.3s;
+        }
+        
+        .btn:hover {
+            background-color: #2980b9;
+        }
+        
+        .btn-secondary {
+            background-color: #95a5a6;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #7f8c8d;
+        }
+        
+        .stats-row {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            margin: 2rem 0;
+        }
+        
+        .stat-card {
+            background-color: var(--secondary-color);
+            color: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            text-align: center;
+            width: 23%;
+            min-width: 200px;
+            margin-bottom: 1rem;
+        }
+        
+        .stat-card h2 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-card p {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+        
+        .summary-section {
+            display: none;
+        }
+        
+        .summary-card {
+            background-color: #f1f8ff;
+            border-left: 4px solid var(--secondary-color);
+        }
+        
+        #dronePreview {
+            background-color: #eee;
+            padding: 2rem;
+            text-align: center;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+        }
+        
+        #droneImage {
+            max-width: 100%;
+            height: auto;
+            max-height: 300px;
+        }
+        
+        .feature-tag {
+            display: inline-block;
+            background-color: #e3f2fd;
+            color: #0d47a1;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+        
+        footer {
+            background-color: var(--primary-color);
+            color: white;
+            text-align: center;
+            padding: 2rem;
+            margin-top: 3rem;
+        }
+        
+        @media (max-width: 768px) {
+            .form-group {
+                min-width: 100%;
+                margin-right: 0;
+            }
+            
+            .stat-card {
+                width: 48%;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .stat-card {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>DroneZone</h1>
+    </header>
+    
+    <nav>
+        <a href="#">Home</a>
+        <a href="#">Shop</a>
+        <a href="#">AI in Drones</a>
+        <a href="#">Cart</a>
+        <a href="#">Login</a>
+    </nav>
+    
+    <div class="hero">
+        <h1>Custom Drone Builder</h1>
+        <p>Design your perfect drone with our interactive customization tool</p>
+    </div>
+    
+    <div class="container">
+        <div id="dronePreview">
+            <img id="droneImage" src="/api/placeholder/400/300" alt="Drone Preview">
+            <div id="droneFeatures" style="margin-top: 1rem;">
+                <!-- Feature tags will be added here -->
+            </div>
+        </div>
+        
+        <form id="droneCustomizationForm">
+            <div class="card form-section">
+                <h2>Basic Requirements</h2>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="purpose">Primary Purpose</label>
+                        <select id="purpose" name="purpose" required onchange="updateDronePreview()">
+                            <option value="">-- Select Purpose --</option>
+                            <option value="photography">Aerial Photography/Videography</option>
+                            <option value="surveillance">Surveillance/Monitoring</option>
+                            <option value="delivery">Package Delivery</option>
+                            <option value="recreational">Recreational Flying</option>
+                            <option value="agricultural">Agricultural Use</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="budget">Budget Range</label>
+                        <select id="budget" name="budget" required>
+                            <option value="">-- Select Budget --</option>
+                            <option value="under500">Under $500</option>
+                            <option value="500-1000">$500-$1,000</option>
+                            <option value="1000-2500">$1,000-$2,500</option>
+                            <option value="2500-5000">$2,500-$5,000</option>
+                            <option value="5000-10000">$5,000-$10,000</option>
+                            <option value="over10000">Over $10,000</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-group" id="otherPurposeGroup" style="display: none;">
+                    <label for="otherPurpose">Please specify your purpose</label>
+                    <input type="text" id="otherPurpose" name="otherPurpose">
+                </div>
+            </div>
+            
+            <div class="card form-section">
+                <h2>Technical Specifications</h2>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="flightTime">Required Flight Time</label>
+                        <select id="flightTime" name="flightTime" required onchange="updateDronePreview()">
+                            <option value="">-- Select Flight Time --</option>
+                            <option value="15-20">15-20 minutes</option>
+                            <option value="20-30">20-30 minutes</option>
+                            <option value="30-45">30-45 minutes</option>
+                            <option value="45+">45+ minutes</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="range">Required Range</label>
+                        <select id="range" name="range" required onchange="updateDronePreview()">
+                            <option value="">-- Select Range --</option>
+                            <option value="short">Short range (up to 1 mile)</option>
+                            <option value="medium">Medium range (1-3 miles)</option>
+                            <option value="long">Long range (3+ miles)</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="payload">Payload Capacity</label>
+                        <select id="payload" name="payload" required onchange="updateDronePreview()">
+                            <option value="">-- Select Payload --</option>
+                            <option value="light">Light (under 200g)</option>
+                            <option value="medium">Medium (200-500g)</option>
+                            <option value="heavy">Heavy (500g-1kg)</option>
+                            <option value="extraHeavy">Extra heavy (1kg+)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="size">Size Requirements</label>
+                        <select id="size" name="size" required onchange="updateDronePreview()">
+                            <option value="">-- Select Size --</option>
+                            <option value="ultraCompact">Ultra-compact (pocket-sized)</option>
+                            <option value="foldable">Foldable/portable</option>
+                            <option value="standard">Standard size</option>
+                            <option value="large">Large industrial size</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card form-section">
+                <h2>Features & Equipment</h2>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="camera">Camera/Imaging Specifications</label>
+                        <select id="camera" name="camera" required onchange="updateDronePreview()">
+                            <option value="">-- Select Camera Type --</option>
+                            <option value="standardHD">Standard HD (1080p)</option>
+                            <option value="4K">4K video capability</option>
+                            <option value="cinema">Professional cinema quality</option>
+                            <option value="thermal">Thermal/infrared imaging</option>
+                            <option value="multispectral">Multispectral imaging</option>
+                            <option value="none">No camera needed</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Additional Features</label>
+                    <div class="form-row radio-group">
+                        <div class="radio-option">
+                            <input type="checkbox" id="featureGPS" name="features" value="GPS" onchange="updateDronePreview()">
+                            <label for="featureGPS">GPS navigation</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="checkbox" id="featureObstacle" name="features" value="obstacle" onchange="updateDronePreview()">
+                            <label for="featureObstacle">Obstacle avoidance</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="checkbox" id="featureAutomated" name="features" value="automated" onchange="updateDronePreview()">
+                            <label for="featureAutomated">Automated flight paths</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="checkbox" id="featureFollow" name="features" value="follow" onchange="updateDronePreview()">
+                            <label for="featureFollow">Follow-me functionality</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="checkbox" id="featureRTH" name="features" value="RTH" onchange="updateDronePreview()">
+                            <label for="featureRTH">Return-to-home capability</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="checkbox" id="featureLive" name="features" value="live" onchange="updateDronePreview()">
+                            <label for="featureLive">Live streaming capability</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="checkbox" id="featureStorage" name="features" value="storage" onchange="updateDronePreview()">
+                            <label for="featureStorage">Data storage solutions</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="checkbox" id="featureAttachment" name="features" value="attachment" onchange="updateDronePreview()">
+                            <label for="featureAttachment">Custom attachment points</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Environmental Operation Conditions</label>
+                    <div class="form-row radio-group">
+                        <div class="radio-option">
+                            <input type="checkbox" id="envStandard" name="environment" value="standard" onchange="updateDronePreview()">
+                            <label for="envStandard">Standard (fair weather)</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="checkbox" id="envWind" name="environment" value="wind" onchange="updateDronePreview()">
+                            <label for="envWind">Wind resistant</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="checkbox" id="envWater" name="environment" value="water" onchange="updateDronePreview()">
+                            <label for="envWater">Waterproof/water resistant</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="checkbox" id="envTemp" name="environment" value="temperature" onchange="updateDronePreview()">
+                            <label for="envTemp">Extreme temperatures</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="checkbox" id="envAltitude" name="environment" value="altitude" onchange="updateDronePreview()">
+                            <label for="envAltitude">High altitude</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card form-section">
+                <h2>Additional Requirements</h2>
+                
+                <div class="form-group">
+                    <label for="additionalRequirements">Any additional custom requirements or specifications?</label>
+                    <textarea id="additionalRequirements" name="additionalRequirements" rows="4"></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="contactInfo">Your Contact Information</label>
+                    <input type="email" id="contactInfo" name="contactInfo" placeholder="Email address" required>
+                </div>
+            </div>
+            
+            <div class="form-row" style="justify-content: space-between;">
+                <button type="button" class="btn btn-secondary" onclick="resetForm()">Reset Form</button>
+                <button type="button" class="btn" onclick="submitForm()">Submit Requirements</button>
+            </div>
+        </form>
+        
+        <div id="summarySection" class="card summary-section summary-card">
+            <h2>Your Custom Drone Summary</h2>
+            <div id="summaryContent">
+                <!-- Summary will be filled here -->
+            </div>
+            <p style="margin-top: 1.5rem;">Thank you for your custom drone request. Our team will contact you shortly with a detailed quote and timeline.</p>
+            <button type="button" class="btn" style="margin-top: 1rem;" onclick="window.location.reload()">Start New Request</button>
+        </div>
+        
+        <div class="stats-row">
+            <div class="stat-card">
+                <h2>82%</h2>
+                <p>of commercial drone users prefer custom solutions</p>
+            </div>
+            <div class="stat-card">
+                <h2>$43B</h2>
+                <p>projected market value of AI drone technology by 2025</p>
+            </div>
+            <div class="stat-card">
+                <h2>5.3X</h2>
+                <p>increase in efficiency with AI-powered drones</p>
+            </div>
+            <div class="stat-card">
+                <h2>94%</h2>
+                <p>reduction in pilot intervention with autonomous systems</p>
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        <p>© 2025 DroneZone - The Future of Unmanned Flight</p>
+    </footer>
+    
+    <script>
+        // Show/hide other purpose field
+        document.getElementById('purpose').addEventListener('change', function() {
+            const otherPurposeGroup = document.getElementById('otherPurposeGroup');
+            if (this.value === 'other') {
+                otherPurposeGroup.style.display = 'block';
+            } else {
+                otherPurposeGroup.style.display = 'none';
+            }
+        });
+        
+        function updateDronePreview() {
+            const purpose = document.getElementById('purpose').value;
+            const flightTime = document.getElementById('flightTime').value;
+            const range = document.getElementById('range').value;
+            const payload = document.getElementById('payload').value;
+            const size = document.getElementById('size').value;
+            const camera = document.getElementById('camera').value;
+            
+            // Update drone image based on selections
+            let imageUrl = '/api/placeholder/400/300';
+            
+            // In a real implementation, you would have different drone images
+            // Here we're just using the placeholder for demonstration
+            document.getElementById('droneImage').src = imageUrl;
+            
+            // Update feature tags
+            const featuresDiv = document.getElementById('droneFeatures');
+            featuresDiv.innerHTML = '';
+            
+            // Add purpose tag
+            if (purpose) {
+                const purposeNames = {
+                    'photography': 'Photography',
+                    'surveillance': 'Surveillance',
+                    'delivery': 'Delivery',
+                    'recreational': 'Recreational',
+                    'agricultural': 'Agricultural'
+                };
+                
+                if (purposeNames[purpose]) {
+                    addFeatureTag(purposeNames[purpose]);
+                }
+            }
+            
+            // Add flight time tag
+            if (flightTime) {
+                addFeatureTag(flightTime + ' min');
+            }
+            
+            // Add range tag
+            if (range) {
+                addFeatureTag(range.charAt(0).toUpperCase() + range.slice(1) + ' range');
+            }
+            
+            // Add payload tag
+            if (payload) {
+                addFeatureTag(payload.charAt(0).toUpperCase() + payload.slice(1) + ' payload');
+            }
+            
+            // Add size tag
+            if (size) {
+                const sizeNames = {
+                    'ultraCompact': 'Ultra-compact',
+                    'foldable': 'Foldable',
+                    'standard': 'Standard size',
+                    'large': 'Industrial size'
+                };
+                
+                if (sizeNames[size]) {
+                    addFeatureTag(sizeNames[size]);
+                }
+            }
+            
+            // Add camera tag
+            if (camera && camera !== 'none') {
+                const cameraNames = {
+                    'standardHD': 'HD Camera',
+                    '4K': '4K Camera',
+                    'cinema': 'Cinema Camera',
+                    'thermal': 'Thermal Camera',
+                    'multispectral': 'Multispectral'
+                };
+                
+                if (cameraNames[camera]) {
+                    addFeatureTag(cameraNames[camera]);
+                }
+            }
+            
+            // Add additional features
+            const featureCheckboxes = document.querySelectorAll('input[name="features"]:checked');
+            featureCheckboxes.forEach(checkbox => {
+                const featureNames = {
+                    'GPS': 'GPS',
+                    'obstacle': 'Obstacle Avoidance',
+                    'automated': 'Auto Flight',
+                    'follow': 'Follow Me',
+                    'RTH': 'Return Home',
+                    'live': 'Live Stream',
+                    'storage': 'Data Storage',
+                    'attachment': 'Custom Attachments'
+                };
+                
+                if (featureNames[checkbox.value]) {
+                    addFeatureTag(featureNames[checkbox.value]);
+                }
+            });
+            
+            // Add environmental features
+            const envCheckboxes = document.querySelectorAll('input[name="environment"]:checked');
+            envCheckboxes.forEach(checkbox => {
+                const envNames = {
+                    'wind': 'Wind Resistant',
+                    'water': 'Water Resistant',
+                    'temperature': 'Temp Resistant',
+                    'altitude': 'High Altitude'
+                };
+                
+                if (envNames[checkbox.value]) {
+                    addFeatureTag(envNames[checkbox.value]);
+                }
+            });
+        }
+        
+        function addFeatureTag(text) {
+            const featuresDiv = document.getElementById('droneFeatures');
+            const tag = document.createElement('span');
+            tag.classList.add('feature-tag');
+            tag.textContent = text;
+            featuresDiv.appendChild(tag);
+        }
+        
+        function resetForm() {
+            document.getElementById('droneCustomizationForm').reset();
+            document.getElementById('otherPurposeGroup').style.display = 'none';
+            document.getElementById('droneFeatures').innerHTML = '';
+            document.getElementById('droneImage').src = '/api/placeholder/400/300';
+        }
+        
+        function submitForm() {
+            // Validate form
+            const form = document.getElementById('droneCustomizationForm');
+            const required = form.querySelectorAll('[required]');
+            let valid = true;
+            
+            required.forEach(field => {
+                if (!field.value) {
+                    field.style.borderColor = 'red';
+                    valid = false;
+                } else {
+                    field.style.borderColor = '';
+                }
+            });
+            
+            if (!valid) {
+                alert('Please fill out all required fields.');
+                return;
+            }
+            
+            // Generate summary
+            const summaryContent = document.getElementById('summaryContent');
+            summaryContent.innerHTML = '';
+            
+            // Basic Requirements
+            const purpose = document.getElementById('purpose');
+            const budget = document.getElementById('budget');
+            
+            let purposeText = purpose.options[purpose.selectedIndex].text;
+            if (purpose.value === 'other') {
+                purposeText = document.getElementById('otherPurpose').value;
+            }
+            
+            addSummaryItem('Primary Purpose', purposeText);
+            addSummaryItem('Budget Range', budget.options[budget.selectedIndex].text);
+            
+            // Technical Specifications
+            const flightTime = document.getElementById('flightTime');
+            const range = document.getElementById('range');
+            const payload = document.getElementById('payload');
+            const size = document.getElementById('size');
+            
+            addSummaryItem('Flight Time', flightTime.options[flightTime.selectedIndex].text);
+            addSummaryItem('Range', range.options[range.selectedIndex].text);
+            addSummaryItem('Payload Capacity', payload.options[payload.selectedIndex].text);
+            addSummaryItem('Size Requirements', size.options[size.selectedIndex].text);
+            
+            // Features & Equipment
+            const camera = document.getElementById('camera');
+            addSummaryItem('Camera/Imaging', camera.options[camera.selectedIndex].text);
+            
+            // Additional Features
+            const featureCheckboxes = document.querySelectorAll('input[name="features"]:checked');
+            let features = Array.from(featureCheckboxes).map(checkbox => {
+                return checkbox.parentElement.querySelector('label').textContent;
+            }).join(', ');
+            
+            if (features) {
+                addSummaryItem('Additional Features', features);
+            }
+            
+            // Environmental Conditions
+            const envCheckboxes = document.querySelectorAll('input[name="environment"]:checked');
+            let environments = Array.from(envCheckboxes).map(checkbox => {
+                return checkbox.parentElement.querySelector('label').textContent;
+            }).join(', ');
+            
+            if (environments) {
+                addSummaryItem('Environmental Conditions', environments);
+            }
+            
+            // Additional Requirements
+            const additionalRequirements = document.getElementById('additionalRequirements').value;
+            if (additionalRequirements) {
+                addSummaryItem('Additional Requirements', additionalRequirements);
+            }
+            
+            // Contact Info
+            const contactInfo = document.getElementById('contactInfo').value;
+            addSummaryItem('Contact Information', contactInfo);
+            
+            // Show summary section
+            document.getElementById('droneCustomizationForm').style.display = 'none';
+            document.getElementById('summarySection').style.display = 'block';
+        }
+        
+        function addSummaryItem(label, value) {
+            const summaryContent = document.getElementById('summaryContent');
+            const item = document.createElement('div');
+            item.style.marginBottom = '0.8rem';
+            
+            const labelElement = document.createElement('strong');
+            labelElement.textContent = label + ': ';
+            
+            const valueElement = document.createElement('span');
+            valueElement.textContent = value;
+            
+            item.appendChild(labelElement);
+            item.appendChild(valueElement);
+            
+            summaryContent.appendChild(item);
+        }
+    </script>
+</body>
+</html>
