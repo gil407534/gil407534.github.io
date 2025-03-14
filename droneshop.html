@@ -434,13 +434,20 @@
     </footer>
     
     <script>
-        // Load the menu from menu.html
-        await fetch('menu finish.html')
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('header').innerHTML = data;
-            });
+    async function loadMenu() {
+        try {
+            const response = await fetch('menu finish.html');
+            const data = await response.text();
+            document.getElementById('header').innerHTML = data;
+        } catch (error) {
+            console.error('Error loading menu:', error);
+        }
+    }
 
+    // Wait for menu to load before continuing
+    (async function() {
+        await loadMenu();
+        console.log("Menu has been loaded. Now continue with the rest of the script.");
         // Sample product data
         const products = [
             {
@@ -810,6 +817,8 @@
         
         // Initialize the page
         displayProducts();
+
+    })();
     </script>
 </body>
 </html>
