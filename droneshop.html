@@ -435,7 +435,7 @@
     
     <script>
         // Load the menu from menu.html
-        fetch('menu.html')
+        await fetch('menu finish.html')
             .then(response => response.text())
             .then(data => {
                 document.getElementById('header').innerHTML = data;
