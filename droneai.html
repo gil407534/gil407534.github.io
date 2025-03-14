@@ -382,16 +382,6 @@
 <body>
     <!-- Header -->
     <header>
-        <div class="container header-container">
-            <div class="logo">DroneZone</div>
-            <div class="nav-links">
-                <a href="index.html">Home</a>
-                <a href="index.html#products">Shop</a>
-                <a href="#" class="active">AI in Drones</a>
-                <a href="#" id="cart-btn">Cart</a>
-                <a href="#" id="login-btn">Login</a>
-            </div>
-        </div>
     </header>
     
     <!-- Hero Section -->
@@ -636,5 +626,28 @@
             <p>&copy; 2025 DroneZone. All rights reserved.</p>
         </div>
     </footer>
+
+    <script>
+    async function loadMenu() {
+        try {
+            const response = await fetch('menu.html');
+            const data = await response.text();
+            document.getElementById('header').innerHTML = data;
+        } catch (error) {
+            console.error('Error loading menu:', error);
+        }
+    }
+
+    // Wait for menu to load before continuing
+    loadMenu().then(() => {
+        document.getElementById('cart-btn').addEventListener('click', function() {
+            window.location.href = 'cart.html';
+        });
+
+        document.getElementById('login-btn').addEventListener('click', function() {
+            window.location.href = 'login.html';
+        });
+    });
+    </script>
 </body>
 </html>

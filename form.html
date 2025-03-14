@@ -500,6 +500,26 @@
     </footer>
     
     <script>
+        async function loadMenu() {
+        try {
+            const response = await fetch('menu.html');
+            const data = await response.text();
+            document.getElementById('header').innerHTML = data;
+        } catch (error) {
+            console.error('Error loading menu:', error);
+        }
+    }
+
+    // Wait for menu to load before continuing
+    loadMenu().then(() => {
+        document.getElementById('cart-btn').addEventListener('click', function() {
+            window.location.href = 'cart.html';
+        });
+
+        document.getElementById('login-btn').addEventListener('click', function() {
+            window.location.href = 'login.html';
+        });
+
         // Show/hide other purpose field
         document.getElementById('purpose').addEventListener('change', function() {
             const otherPurposeGroup = document.getElementById('otherPurposeGroup');
@@ -740,6 +760,7 @@
             
             summaryContent.appendChild(item);
         }
+    });
     </script>
 </body>
 </html>
