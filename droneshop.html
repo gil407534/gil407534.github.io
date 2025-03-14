@@ -342,15 +342,6 @@
 <body>
     <!-- Header -->
     <header id="header">
-        <div class="container header-container">
-            <div class="logo">DroneZone</div>
-            <div class="nav-links">
-                <a href="#" class="active">Home</a>
-                <a href="#products">Shop</a>
-                <a href="#" id="cart-btn">Cart <span id="cart-count">(0)</span></a>
-                <a href="#" id="login-btn">Login</a>
-            </div>
-        </div>
     </header>
     
     <!-- Hero Section -->
@@ -442,6 +433,18 @@
     </footer>
     
     <script>
+    async function loadMenu() {
+        try {
+            const response = await fetch('menu.html');
+            const data = await response.text();
+            document.getElementById('header').innerHTML = data;
+        } catch (error) {
+            console.error('Error loading menu:', error);
+        }
+    }
+
+    // Wait for menu to load before continuing
+    loadMenu().then(() => {
         // Sample product data
         const products = [
             {
@@ -811,6 +814,7 @@
         
         // Initialize the page
         displayProducts();
+    });
     </script>
 </body>
 </html>
