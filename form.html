@@ -249,10 +249,18 @@
     </style>
 </head>
 <body>
-    <header id="header">
-        <!-- Menu will be loaded here -->
+    <header>
+        <h1>DroneZone</h1>
     </header>
-
+    
+    <nav>
+        <a href="#">Home</a>
+        <a href="#">Shop</a>
+        <a href="#">AI in Drones</a>
+        <a href="#">Cart</a>
+        <a href="#">Login</a>
+    </nav>
+    
     <div class="hero">
         <h1>Custom Drone Builder</h1>
         <p>Design your perfect drone with our interactive customization tool</p>
@@ -492,26 +500,6 @@
     </footer>
     
     <script>
-        async function loadMenu() {
-        try {
-            const response = await fetch('menu.html');
-            const data = await response.text();
-            document.getElementById('header').innerHTML = data;
-        } catch (error) {
-            console.error('Error loading menu:', error);
-        }
-    }
-
-    // Wait for menu to load before continuing
-    loadMenu().then(() => {
-        document.getElementById('cart-btn').addEventListener('click', function() {
-            window.location.href = 'cart.html';
-        });
-
-        document.getElementById('login-btn').addEventListener('click', function() {
-            window.location.href = 'login.html';
-        });
-
         // Show/hide other purpose field
         document.getElementById('purpose').addEventListener('change', function() {
             const otherPurposeGroup = document.getElementById('otherPurposeGroup');
@@ -752,7 +740,6 @@
             
             summaryContent.appendChild(item);
         }
-    });
     </script>
 </body>
 </html>
