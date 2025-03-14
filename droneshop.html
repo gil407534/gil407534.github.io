@@ -445,8 +445,7 @@
     }
 
     // Wait for menu to load before continuing
-    (async function() {
-        await loadMenu();
+    loadMenu().then(() => {
         console.log("Menu has been loaded. Now continue with the rest of the script.");
         // Sample product data
         const products = [
@@ -818,7 +817,7 @@
         // Initialize the page
         displayProducts();
 
-    })();
+    });
     </script>
 </body>
 </html>
